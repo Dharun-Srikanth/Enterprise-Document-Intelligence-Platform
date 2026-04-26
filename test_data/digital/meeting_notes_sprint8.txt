@@ -1,0 +1,106 @@
+NEXUS AUTOMOTIVE GROUP
+Meeting Notes — Sprint 8 Planning & Design Review
+
+Date: August 15, 2025
+Location: Conference Room B, Detroit HQ
+Attendees: Raj Patel (Engineering Lead), Sarah Chen (VP Finance), David Park (Procurement Director), Anika Johansson (Sustainability Manager), Tom Bradley (QA Lead), Maria Santos (Product Manager)
+
+Facilitator: Maria Santos
+Note-taker: Tom Bradley
+
+---
+
+AGENDA
+1. Sprint 7 Retrospective
+2. Sprint 8 Planning
+3. Design Review — Seat Track Assembly Redesign
+4. Open Risks & Blockers
+5. Action Items
+
+---
+
+1. SPRINT 7 RETROSPECTIVE
+
+Completed:
+- Prototype testing for HSLA steel seat frame (passed 95% of durability benchmarks)
+- Supplier qualification audit for TierOne Manufacturing (PASSED)
+- Carbon footprint baseline established for all 5 component families
+
+Not Completed:
+- Wire spring support fatigue testing (delayed — equipment calibration issue)
+- Vendor matrix update for slide rail suppliers (Anika working on emissions data)
+
+Key Observation: The HSLA steel prototype showed a 15% weight reduction vs cold-rolled steel with comparable structural integrity. Raj noted that weld quality needs further validation before production approval.
+
+---
+
+2. SPRINT 8 PLANNING
+
+Sprint Goal: "Finalize material substitution decisions for seat track and recliner components with cost-carbon trade-off analysis."
+
+| Task                                       | Owner          | Points | Priority |
+|--------------------------------------------|----------------|--------|----------|
+| Cost-carbon trade-off model for seat track  | David Park     | 8      | P0       |
+| Recliner mechanism material testing         | Raj Patel      | 5      | P0       |
+| Sustainability impact report draft          | Anika Johansson| 5      | P1       |
+| Wire spring fatigue testing (carry-over)    | Tom Bradley    | 3      | P1       |
+| Supplier negotiation — SteelCraft pricing   | David Park     | 5      | P0       |
+| Update BOM with HSLA alternatives           | Maria Santos   | 3      | P2       |
+
+Total capacity: 34 points | Committed: 29 points
+
+---
+
+3. DESIGN REVIEW — SEAT TRACK ASSEMBLY REDESIGN
+
+Raj Patel presented the redesigned seat track assembly. Key points:
+
+Current Design:
+- Material: Cold-rolled steel (CR1020)
+- Weight: 2.8 kg per unit
+- Cost: $15.50 per unit
+- Carbon footprint: 3.25 kg CO2e per unit
+
+Proposed Design (Option A — HSLA Steel):
+- Material: HSLA steel (HSLA340)
+- Weight: 2.38 kg per unit (15% reduction)
+- Estimated cost: $17.50 per unit (13% increase)
+- Carbon footprint: 2.80 kg CO2e per unit (14% reduction)
+
+Proposed Design (Option B — Aluminum Alloy):
+- Material: 6061-T6 Aluminum
+- Weight: 1.54 kg per unit (45% reduction)
+- Estimated cost: $27.50 per unit (77% increase)
+- Carbon footprint: 4.10 kg CO2e per unit (26% INCREASE)
+
+Decision: Committee approved Option A (HSLA steel) for production validation. Option B rejected due to higher carbon footprint despite weight savings — misaligned with SBTi targets. Sarah Chen noted the cost increase is offset by the $3.2M savings from broader material substitution program.
+
+---
+
+4. OPEN RISKS & BLOCKERS
+
+| Risk ID | Description                                    | Owner          | Severity | Status  |
+|---------|------------------------------------------------|----------------|----------|---------|
+| R-042   | HSLA weld quality validation incomplete         | Raj Patel      | HIGH     | Open    |
+| R-043   | SteelCraft pricing not finalized for Q1 2026    | David Park     | MEDIUM   | Open    |
+| R-044   | Wire spring fatigue test equipment down          | Tom Bradley    | MEDIUM   | Open    |
+| R-045   | Sustainability report deadline (Oct 15)          | Anika Johansson| LOW      | On Track|
+| R-046   | Greenville plant capacity for new press install  | Maria Santos   | HIGH     | Open    |
+
+Blocker: R-042 blocks final production approval for HSLA seat track. Raj committed to completing weld validation by August 30, 2025.
+
+---
+
+5. ACTION ITEMS
+
+- [ ] Raj Patel: Complete HSLA weld quality validation by Aug 30
+- [ ] David Park: Send revised pricing proposal to SteelCraft by Aug 20
+- [ ] Anika Johansson: Circulate draft sustainability impact report by Sep 1
+- [ ] Tom Bradley: Coordinate equipment repair for spring fatigue tester
+- [ ] Maria Santos: Update BOM system with Option A specifications
+- [ ] Sarah Chen: Prepare cost impact memo for board review (Sep board meeting)
+
+Next Sprint Review: August 29, 2025
+
+---
+Minutes approved by: Maria Santos, Product Manager

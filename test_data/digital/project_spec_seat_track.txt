@@ -1,0 +1,85 @@
+NEXUS AUTOMOTIVE GROUP
+Project Specification — Seat Track Assembly Redesign (STA-R2)
+
+Document ID: SPEC-2025-0042
+Version: 2.1
+Author: Raj Patel, Engineering Lead
+Date: August 1, 2025
+Status: APPROVED
+
+---
+
+1. SCOPE
+
+This specification defines the requirements for redesigning the seat track assembly (Part No. STA-4200) to incorporate HSLA steel (grade HSLA340) as the primary structural material, replacing cold-rolled steel (CR1020). The redesign aims to reduce component weight by 15% and carbon footprint by 14% while maintaining all safety and performance requirements.
+
+2. APPLICABLE STANDARDS
+
+- FMVSS 207: Seating Systems (Federal Motor Vehicle Safety Standard)
+- SAE J879: Seat Track Testing Procedures
+- ISO 14044: Environmental Management — Life Cycle Assessment
+- Internal Standard NX-STR-001: Structural Component Design Guidelines
+
+3. REQUIREMENTS
+
+3.1 Material Requirements
+- Primary material: HSLA340 steel, 1.2mm gauge (reduced from 1.4mm CR1020)
+- Surface treatment: Zinc-nickel electroplating (minimum 8μm thickness)
+- Yield strength: ≥ 340 MPa
+- Tensile strength: ≥ 410 MPa
+- Elongation: ≥ 21%
+
+3.2 Performance Requirements
+| Parameter                    | Requirement          | Test Method     |
+|------------------------------|----------------------|-----------------|
+| Static load (forward)        | ≥ 2670 N             | SAE J879 4.1    |
+| Static load (rearward)       | ≥ 2670 N             | SAE J879 4.2    |
+| Cycle life                   | ≥ 50,000 cycles      | SAE J879 5.1    |
+| Corrosion resistance         | ≥ 720 hrs salt spray | ASTM B117       |
+| Operating temperature        | -40°C to +80°C       | Internal NX-ENV |
+| Weight (per assembly)        | ≤ 2.40 kg            | Direct measure  |
+
+3.3 Manufacturing Requirements
+- Stamping process: Progressive die, 4-station transfer press
+- Weld type: Resistance spot welding (RSW), minimum 12 weld points per assembly
+- Weld quality: Per AWS D8.1, Class A
+- Surface finish: Ra ≤ 1.6 μm on track surfaces
+
+3.4 Sustainability Requirements
+- Carbon footprint: ≤ 2.90 kg CO2e per assembly (cradle-to-gate)
+- Material recyclability: ≥ 95% by weight
+- Packaging: 100% recyclable materials
+- Supplier emissions reporting: Scope 1, 2, and 3 mandatory
+
+4. BILL OF MATERIALS
+
+| Item | Part Name           | Material    | Qty | Weight (g) | Cost ($) |
+|------|---------------------|-------------|-----|------------|----------|
+| 1    | Upper track rail     | HSLA340     | 2   | 420        | 3.80     |
+| 2    | Lower track rail     | HSLA340     | 2   | 480        | 4.20     |
+| 3    | Locking mechanism    | CR1020      | 1   | 180        | 2.50     |
+| 4    | Ball bearing cage    | Nylon 6/6   | 4   | 15         | 0.60     |
+| 5    | Release lever        | HSLA340     | 1   | 85         | 1.40     |
+| 6    | Mounting brackets    | HSLA340     | 4   | 120        | 2.80     |
+| 7    | Fasteners (M8)       | Grade 10.9  | 8   | 45         | 1.20     |
+|      | **TOTAL**            |             |     | **2,380**  | **16.50**|
+
+5. TESTING PLAN
+
+Phase 1: Material qualification (completed July 2025)
+Phase 2: Weld quality validation (in progress — see Risk R-042)
+Phase 3: Full assembly durability testing (scheduled Sep 2025)
+Phase 4: Vehicle-level integration testing (scheduled Nov 2025)
+
+6. APPROVAL CHAIN
+
+| Role                | Name             | Date       | Signature |
+|---------------------|------------------|------------|-----------|
+| Engineering Lead    | Raj Patel        | Aug 1, 2025| [Signed]  |
+| QA Lead             | Tom Bradley      | Aug 3, 2025| [Signed]  |
+| Procurement Dir.    | David Park       | Aug 5, 2025| [Signed]  |
+| VP Finance          | Sarah Chen       | Aug 5, 2025| [Signed]  |
+| Program Manager     | Maria Santos     | Aug 6, 2025| [Signed]  |
+
+---
+End of Specification

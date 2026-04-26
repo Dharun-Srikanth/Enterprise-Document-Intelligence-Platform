@@ -1,0 +1,17 @@
+component_type,material,cost_low,cost_high,cost_unit,carbon_footprint_kg_co2e,emission_factor_source,notes
+seat_track_assembly,cold_rolled_steel,12.50,18.75,USD,3.2500,IPCC AR6 / WorldSteel 2023,Standard seat track with stamped brackets
+seat_track_assembly,HSLA_steel,14.00,21.00,USD,2.8000,IPCC AR6 / WorldSteel 2023,High-strength low-alloy variant reduces weight 15%
+seat_track_assembly,aluminum_alloy,22.00,33.00,USD,4.1000,IAI 2023 Life Cycle Data,Lightweight but higher embodied carbon
+slide_rail_mechanism,cold_rolled_steel,8.50,12.75,USD,2.1000,IPCC AR6 / WorldSteel 2023,Linear slide rail with ball bearings
+slide_rail_mechanism,HSLA_steel,9.50,14.25,USD,1.8500,IPCC AR6 / WorldSteel 2023,Improved fatigue resistance
+slide_rail_mechanism,tubular_steel,10.00,15.00,USD,2.4000,IPCC AR6 / WorldSteel 2023,Hollow section for weight optimization
+seat_frame_structure,cold_rolled_steel,18.00,27.00,USD,5.4000,IPCC AR6 / WorldSteel 2023,Full seat frame stamped steel
+seat_frame_structure,tubular_steel,20.00,30.00,USD,4.8000,IPCC AR6 / WorldSteel 2023,Tubular frame construction
+seat_frame_structure,HSLA_steel,21.00,31.50,USD,4.2000,IPCC AR6 / WorldSteel 2023,Weight-optimized high-strength frame
+seat_frame_structure,aluminum_alloy,35.00,52.50,USD,7.8000,IAI 2023 Life Cycle Data,Premium lightweight frame
+recliner_mechanism,cold_rolled_steel,15.00,22.50,USD,3.8000,IPCC AR6 / WorldSteel 2023,Standard recliner gear mechanism
+recliner_mechanism,HSLA_steel,17.00,25.50,USD,3.3000,IPCC AR6 / WorldSteel 2023,Enhanced durability recliner
+recliner_mechanism,tubular_steel,16.00,24.00,USD,3.5500,IPCC AR6 / WorldSteel 2023,Hybrid tubular recliner design
+wire_spring_support,spring_steel_wire,6.00,9.00,USD,1.5000,IPCC AR6 / WorldSteel 2023,Serpentine spring wire support
+wire_spring_support,cold_rolled_steel,7.50,11.25,USD,1.9000,IPCC AR6 / WorldSteel 2023,Flat spring steel support
+wire_spring_support,HSLA_steel,8.00,12.00,USD,1.6500,IPCC AR6 / WorldSteel 2023,High-strength spring support

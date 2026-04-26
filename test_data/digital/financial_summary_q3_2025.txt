@@ -1,0 +1,54 @@
+NEXUS AUTOMOTIVE GROUP
+Financial Summary Report — Q3 2025
+
+Prepared by: Sarah Chen, VP Finance
+Date: September 30, 2025
+Distribution: Executive Leadership Team
+
+EXECUTIVE SUMMARY
+
+Nexus Automotive Group achieved total revenue of $142.8M in Q3 2025, representing a 7.2% year-over-year increase. Operating expenses were controlled at $118.4M, yielding an operating margin of 17.1%. The cost optimization initiative led by the procurement team delivered $8.3M in savings against a target of $7.5M.
+
+REVENUE BREAKDOWN BY DIVISION
+
+| Division              | Q3 2025 ($M) | Q3 2024 ($M) | YoY Change |
+|-----------------------|--------------|--------------|------------|
+| Seat Systems          | 52.4         | 48.1         | +8.9%      |
+| Chassis Components    | 38.7         | 36.9         | +4.9%      |
+| Interior Trim         | 28.3         | 25.8         | +9.7%      |
+| Electronics & Wiring  | 23.4         | 22.4         | +4.5%      |
+| Total                 | 142.8        | 133.2        | +7.2%      |
+
+COST OPTIMIZATION PROGRAM — PROCUREMENT TOWER
+
+The procurement tower cost-saving initiative, managed by David Park (Director of Procurement), identified 23 actionable ideas across four categories:
+
+1. Material Substitution: $3.2M in potential savings by switching from cold-rolled steel to HSLA steel for seat frame structures. Carbon footprint reduction estimated at 22%.
+
+2. Supplier Consolidation: $2.1M savings through consolidating seat track assembly suppliers from 5 to 2 preferred vendors (TierOne Manufacturing and SteelCraft Industries).
+
+3. Design Optimization: $1.8M savings from redesigning the slide rail mechanism to reduce material waste by 18%. Engineering team (led by Raj Patel) completed feasibility study.
+
+4. Process Improvement: $1.2M savings from lean manufacturing implementation at the Greenville plant. Timeline: Q1 2026 completion.
+
+CAPITAL EXPENDITURE
+
+Total CapEx for Q3: $12.6M
+- New stamping press (Greenville plant): $4.8M
+- Automation upgrade (Detroit assembly line): $3.2M
+- Quality inspection systems: $2.1M
+- IT infrastructure: $2.5M
+
+SUSTAINABILITY METRICS
+
+Carbon emissions for Q3: 18,400 tonnes CO2e (down 5.3% from Q3 2024)
+Key driver: Material substitution program reducing steel processing emissions.
+Target: 15% reduction by end of 2026, aligned with SBTi commitment.
+
+OUTLOOK
+
+Q4 2025 revenue projected at $148.5M based on confirmed orders. The board approved an additional $5M investment in sustainability R&D, specifically targeting alternative materials with lower embodied carbon for seat frame and recliner components.
+
+---
+Approved by: Michael Torres, CEO, Nexus Automotive Group
+Reviewed by: Lisa Wong, CFO

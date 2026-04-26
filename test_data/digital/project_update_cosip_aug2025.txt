@@ -1,0 +1,104 @@
+NEXUS AUTOMOTIVE GROUP
+Project Update — Cost Optimization & Sustainability Integration Program (COSIP)
+
+Report Period: August 2025
+Program Manager: Maria Santos
+Sponsor: Michael Torres, CEO
+
+---
+
+PROGRAM OVERVIEW
+
+The Cost Optimization & Sustainability Integration Program (COSIP) is a cross-functional initiative to achieve $15M in annual cost savings while reducing the carbon footprint of manufactured components by 20% over 24 months. The program spans procurement, engineering, manufacturing, and sustainability functions.
+
+Budget: $4.2M allocated (FY2025-2026)
+Timeline: January 2025 — December 2026
+Current Phase: Phase 2 — Material Substitution & Supplier Optimization
+
+---
+
+MILESTONE STATUS
+
+| Milestone                          | Target Date   | Status        | % Complete |
+|------------------------------------|---------------|---------------|------------|
+| Phase 1: Baseline & Assessment     | Mar 2025      | COMPLETED     | 100%       |
+| Phase 2: Material Substitution     | Sep 2025      | IN PROGRESS   | 68%        |
+| Phase 3: Process Optimization      | Mar 2026      | NOT STARTED   | 0%         |
+| Phase 4: Full Integration          | Dec 2026      | NOT STARTED   | 0%         |
+
+---
+
+PHASE 2 DETAILED STATUS
+
+Workstream 2A — Seat Components Material Substitution
+Lead: Raj Patel (Engineering) + David Park (Procurement)
+
+Progress:
+- Seat track assembly: HSLA steel option validated. Cost delta: +$2.00/unit. Carbon reduction: -14%. Production approval pending weld validation (Risk R-042).
+- Seat frame structure: Tubular steel evaluation complete. Cost savings: $1.50/unit vs cold-rolled steel. Carbon reduction: -11%. Approved for Phase 3 pilot.
+- Recliner mechanism: Testing in progress. Preliminary results show HSLA steel viable with 10% weight reduction. Expected completion: Sep 15, 2025.
+
+Workstream 2B — Supplier Optimization
+Lead: David Park
+
+Progress:
+- Seat track suppliers consolidated from 5 to 2 (TierOne Manufacturing, SteelCraft Industries).
+- TierOne audit PASSED (Aug 2025). SteelCraft audit scheduled for Sep 10, 2025.
+- Estimated procurement savings: $2.1M annually.
+- Anika Johansson confirmed both suppliers meet Scope 3 emissions reporting requirements.
+
+Workstream 2C — Sustainability Analytics Platform
+Lead: Anika Johansson
+
+Progress:
+- Carbon footprint benchmark database created for all 5 component families and 5 material types.
+- Life cycle assessment (LCA) methodology aligned with ISO 14044.
+- Dashboard prototype under development — integrates cost and emissions data for decision support.
+- Data handling policy signed by all stakeholders. Sanitization approach: PII removal from scanned documents before ingestion into analytics platform.
+
+---
+
+FINANCIAL IMPACT (YTD)
+
+| Category                  | Target ($M) | Achieved ($M) | Gap ($M) |
+|---------------------------|-------------|---------------|----------|
+| Material Substitution     | 5.0         | 3.2           | -1.8     |
+| Supplier Consolidation    | 3.0         | 2.1           | -0.9     |
+| Design Optimization       | 2.0         | 1.8           | -0.2     |
+| Process Improvement       | 1.5         | 1.2           | -0.3     |
+| Total                     | 11.5        | 8.3           | -3.2     |
+
+Note: $3.2M gap expected to close in Q4 2025 as recliner and wire spring decisions are finalized. David Park's revised procurement contracts effective October 1 should contribute an additional $1.5M.
+
+---
+
+KEY DECISIONS NEEDED
+
+1. Board approval for $1.8M investment in new HSLA-capable tooling at Greenville plant (Sarah Chen preparing business case).
+2. Final material selection for wire spring support — spring steel wire vs HSLA steel. Cost difference: $2.00/unit. Carbon difference: 0.15 kg CO2e/unit. Tom Bradley's fatigue testing will inform the decision.
+3. Whether to include aluminum alloy options in Phase 3 scope despite higher embodied carbon.
+
+---
+
+RISKS & ISSUES
+
+| ID    | Description                               | Impact | Likelihood | Owner           | Mitigation                    |
+|-------|-------------------------------------------|--------|------------|-----------------|-------------------------------|
+| R-042 | HSLA weld quality not yet validated        | HIGH   | MEDIUM     | Raj Patel       | Accelerated test schedule     |
+| R-043 | SteelCraft pricing uncertainty             | MEDIUM | HIGH       | David Park      | Parallel negotiation track    |
+| R-046 | Greenville plant capacity constraint       | HIGH   | LOW        | Maria Santos    | Phased installation plan      |
+| R-047 | LCA data quality for Scope 3 suppliers     | MEDIUM | MEDIUM     | Anika Johansson | Third-party verification      |
+
+---
+
+NEXT STEPS (September 2025)
+
+1. Complete HSLA weld validation and obtain production approval
+2. Finalize SteelCraft pricing for Q1 2026 supply agreement
+3. Present cost-carbon trade-off analysis to board (Sep 25 board meeting)
+4. Begin Phase 3 scoping for process optimization workstream
+5. Launch sustainability analytics dashboard (beta) for internal stakeholders
+
+---
+Submitted by: Maria Santos, Program Manager
+Reviewed by: Michael Torres, CEO

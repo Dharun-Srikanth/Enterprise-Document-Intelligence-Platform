@@ -1,0 +1,35 @@
+# FastAPI + Server
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+pydantic==2.9.2
+pydantic-settings==2.5.2
+
+# Database
+sqlalchemy==2.0.35
+asyncpg==0.29.0
+alembic==1.13.3
+psycopg2-binary==2.9.9
+
+# Vector Store
+chromadb==0.5.5
+
+# OpenAI
+openai==1.51.0
+
+# OCR + Image Processing
+pytesseract==0.3.10
+opencv-python-headless==4.10.0.84
+Pillow==10.4.0
+
+# PDF Processing
+PyMuPDF==1.24.10
+
+# NLP
+spacy==3.7.6
+
+# Utilities
+python-dotenv==1.0.1
+httpx==0.27.2
+aiofiles==24.1.0
+uuid6==2024.7.10
