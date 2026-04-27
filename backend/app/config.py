@@ -17,11 +17,12 @@ class Settings(BaseSettings):
     chroma_host: str = "chromadb"
     chroma_port: int = 8000
 
-    # OpenAI
-    openai_api_key: str = ""
-    llm_model: str = "gpt-4o"
-    llm_model_mini: str = "gpt-4o-mini"
-    embedding_model: str = "text-embedding-3-small"
+    # Groq (free tier — https://console.groq.com)
+    groq_api_key: str = ""
+    llm_model: str = "llama-3.3-70b-versatile"
+    llm_model_mini: str = "llama-3.3-70b-versatile"
+    llm_model_vision: str = "llama-3.2-11b-vision-preview"
+    embedding_model: str = "all-MiniLM-L6-v2"
 
     # File storage
     upload_dir: str = "/app/uploads"

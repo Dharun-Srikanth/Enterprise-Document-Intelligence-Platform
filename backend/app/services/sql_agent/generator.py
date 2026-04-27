@@ -131,7 +131,7 @@ def generate_sql(question: str, max_retries: int = 2) -> dict:
 
     try:
         result = chat_completion_json(
-            messages, model="gpt-4o-mini", temperature=0.0, max_tokens=1500
+            messages, temperature=0.0, max_tokens=1500
         )
 
         sql = result.get("sql", "").strip().rstrip(";")
@@ -196,7 +196,7 @@ def regenerate_sql(question: str, failed_sql: str, error_message: str) -> dict:
 
     try:
         result = chat_completion_json(
-            messages, model="gpt-4o-mini", temperature=0.0, max_tokens=1500
+            messages, temperature=0.0, max_tokens=1500
         )
 
         sql = result.get("sql", "").strip().rstrip(";")

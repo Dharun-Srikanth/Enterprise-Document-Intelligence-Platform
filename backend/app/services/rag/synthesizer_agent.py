@@ -135,7 +135,7 @@ def synthesize(
         ]
 
         result = chat_completion_json(
-            messages, model="gpt-4o-mini", temperature=0.1, max_tokens=2000
+            messages, temperature=0.1, max_tokens=2000
         )
 
         answer = result.get("answer", "")

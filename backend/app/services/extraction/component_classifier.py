@@ -93,7 +93,6 @@ Return JSON:
     result = vision_completion_json(
         image_data_url=image_data_url,
         prompt=prompt,
-        model="gpt-4o",
         temperature=0.1,
         max_tokens=500,
     )

@@ -1,4 +1,4 @@
-"""OpenAI LLM client wrapper with retry logic."""
+"""Groq LLM client (OpenAI-compatible API) + ChromaDB local embeddings."""
 
 import os
 import json
@@ -8,36 +8,52 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 _client = None
+_embedding_fn = None
 
 
-def get_openai_client():
-    """Get or create OpenAI client."""
+# ---------------------------------------------------------------------------
+# Groq client (OpenAI-compatible)
+# ---------------------------------------------------------------------------
+
+def _get_client():
+    """Get or create Groq client via OpenAI SDK."""
     global _client
     if _client is None:
         from openai import OpenAI
         from app.config import get_settings
         settings = get_settings()
-        api_key = settings.openai_api_key or os.environ.get("OPENAI_API_KEY", "")
-        if not api_key or api_key == "your-openai-api-key-here":
-            raise ValueError("OPENAI_API_KEY not set. Please set it in .env file.")
-        _client = OpenAI(api_key=api_key)
+        api_key = settings.groq_api_key or os.environ.get("GROQ_API_KEY", "")
+        if not api_key or api_key == "your-groq-api-key-here":
+            raise ValueError(
+                "GROQ_API_KEY not set. Please set it in .env file. "
+                "Get a free key at https://console.groq.com"
+            )
+        _client = OpenAI(
+            api_key=api_key,
+            base_url="https://api.groq.com/openai/v1",
+        )
     return _client
 
 
+# ---------------------------------------------------------------------------
+# Chat completion
+# ---------------------------------------------------------------------------
+
 def chat_completion(
     messages: list[dict],
-    model: str = "gpt-4o-mini",
+    model: str | None = None,
     temperature: float = 0.1,
     max_tokens: int = 2000,
     response_format: Optional[dict] = None,
     max_retries: int = 3,
 ) -> str:
     """
-    Call OpenAI chat completion with retry logic.
-
-    Returns the assistant message content as string.
+    Call Groq chat completion with retry logic.
+    Uses OpenAI-compatible API format.
     """
-    client = get_openai_client()
+    from app.config import get_settings
+    client = _get_client()
+    model = model or get_settings().llm_model
 
     for attempt in range(max_retries):
         try:
@@ -54,23 +70,23 @@ def chat_completion(
             return response.choices[0].message.content or ""
 
         except Exception as e:
-            logger.warning(f"OpenAI API attempt {attempt+1}/{max_retries} failed: {e}")
+            logger.warning(f"Groq API attempt {attempt+1}/{max_retries} failed: {e}")
             if attempt == max_retries - 1:
                 raise
             import time
-            time.sleep(2 ** attempt)  # Exponential backoff
+            time.sleep(2 ** attempt)
 
     return ""
 
 
 def chat_completion_json(
     messages: list[dict],
-    model: str = "gpt-4o-mini",
+    model: str | None = None,
     temperature: float = 0.1,
     max_tokens: int = 2000,
     max_retries: int = 3,
 ) -> dict:
-    """Call OpenAI and parse response as JSON."""
+    """Call Groq and parse response as JSON."""
     raw = chat_completion(
         messages=messages,
         model=model,
@@ -82,7 +98,6 @@ def chat_completion_json(
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # Try to extract JSON from markdown code blocks
         if "```json" in raw:
             raw = raw.split("```json")[1].split("```")[0]
         elif "```" in raw:
@@ -90,15 +105,22 @@ def chat_completion_json(
         return json.loads(raw)
 
 
+# ---------------------------------------------------------------------------
+# Vision completion
+# ---------------------------------------------------------------------------
+
 def vision_completion(
     image_data_url: str,
     prompt: str,
-    model: str = "gpt-4o",
+    model: str | None = None,
     temperature: float = 0.1,
     max_tokens: int = 1500,
     max_retries: int = 3,
 ) -> str:
-    """Call OpenAI vision model with an image."""
+    """Call Groq vision model with an image (OpenAI-compatible format)."""
+    from app.config import get_settings
+    model = model or get_settings().llm_model_vision
+
     messages = [
         {
             "role": "user",
@@ -106,7 +128,7 @@ def vision_completion(
                 {"type": "text", "text": prompt},
                 {
                     "type": "image_url",
-                    "image_url": {"url": image_data_url, "detail": "high"},
+                    "image_url": {"url": image_data_url},
                 },
             ],
         }
@@ -123,15 +145,17 @@ def vision_completion(
 def vision_completion_json(
     image_data_url: str,
     prompt: str,
-    model: str = "gpt-4o",
+    model: str | None = None,
     temperature: float = 0.1,
     max_tokens: int = 1500,
     max_retries: int = 3,
 ) -> dict:
-    """Call OpenAI vision model and parse response as JSON."""
+    """Call Groq vision model and parse response as JSON."""
+    json_prompt = prompt + "\n\nIMPORTANT: Return ONLY valid JSON, no markdown formatting."
+
     raw = vision_completion(
         image_data_url=image_data_url,
-        prompt=prompt,
+        prompt=json_prompt,
         model=model,
         temperature=temperature,
         max_tokens=max_tokens,
@@ -147,8 +171,18 @@ def vision_completion_json(
         return json.loads(raw)
 
 
-def get_embeddings(texts: list[str], model: str = "text-embedding-3-small") -> list[list[float]]:
-    """Get embeddings for a list of texts."""
-    client = get_openai_client()
-    response = client.embeddings.create(input=texts, model=model)
-    return [item.embedding for item in response.data]
+# ---------------------------------------------------------------------------
+# Embeddings (ChromaDB built-in — local, free, no API needed)
+# ---------------------------------------------------------------------------
+
+def get_embeddings(texts: list[str], model: str | None = None) -> list[list[float]]:
+    """
+    Get embeddings using ChromaDB's built-in embedding function.
+    Uses all-MiniLM-L6-v2 via ONNX Runtime — runs locally, no API key needed.
+    """
+    global _embedding_fn
+    if _embedding_fn is None:
+        from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+        logger.info("Loading ChromaDB default embedding model (all-MiniLM-L6-v2 via ONNX)")
+        _embedding_fn = DefaultEmbeddingFunction()
+    return _embedding_fn(texts)

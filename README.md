@@ -60,7 +60,7 @@ The platform handles:
 
 - **Smart Document Ingestion** — Automatic detection of digital documents, scanned documents, and tear-down photos
 - **OCR Pipeline** — OpenCV preprocessing (deskew, denoise, binarize) + Tesseract OCR for scanned documents
-- **AI-Powered Extraction** — GPT-4o vision for component/material classification, spaCy + LLM for entity extraction
+- **AI-Powered Extraction** — Groq LLM (Llama 3.3 70B) + vision model for component/material classification, spaCy + LLM for entity extraction
 - **Sustainability Analytics** — Carbon footprint estimation (kg CO2e) with benchmark cross-referencing
 - **Natural Language to SQL** — Ask questions in plain English, see generated SQL and tabular results
 - **RAG with Multi-hop Retrieval** — Two-agent architecture (Retriever + Synthesizer) with source citations
@@ -129,8 +129,9 @@ The platform handles:
 | **Vector Store**    | ChromaDB 0.5.5                          | Lightweight, Python-native, persistent local or server mode |
 | **OCR**             | Tesseract 5 + pytesseract              | Free, reliable with OpenCV preprocessing                   |
 | **Image Processing**| OpenCV (headless)                       | Skew correction, noise reduction, adaptive binarization    |
-| **LLM**            | OpenAI GPT-4o + GPT-4o-mini             | Vision for photos, reasoning for agents, cost-efficient mini model |
-| **Embeddings**      | OpenAI text-embedding-3-small           | Cost-effective, high quality for RAG retrieval              |
+| **LLM**            | Groq (Llama 3.3 70B, free tier)         | Fastest inference, generous free tier (30 RPM, 14400 RPD)  |
+| **Vision**          | Groq (Llama 3.2 11B Vision, free tier)  | Component/material classification from teardown photos     |
+| **Embeddings**      | all-MiniLM-L6-v2 (local, via ChromaDB)  | Runs locally via ONNX Runtime, no API key needed           |
 | **NER**             | spaCy (en_core_web_sm) + LLM           | Fast baseline NER with LLM refinement for domain entities  |
 | **PDF Parsing**     | PyMuPDF (fitz)                          | Fast extraction of text + structure from PDFs               |
 | **ORM**             | SQLAlchemy 2.0 (async)                  | Mature Python ORM with async session support                |
@@ -169,7 +170,7 @@ AI_Engineer_Project/
 │   │   │   ├── query_log.py        # Query audit trail
 │   │   │   └── benchmark.py        # Reference benchmark data
 │   │   └── services/
-│   │       ├── llm_client.py       # OpenAI wrapper with retry logic
+│   │       ├── llm_client.py       # Groq LLM wrapper + local ChromaDB embeddings
 │   │       ├── ingestion/          # Layer 1: Document Ingestion & OCR
 │   │       │   ├── pipeline.py     # Main ingestion orchestrator
 │   │       │   ├── detector.py     # MIME type + content-based type detection
@@ -181,7 +182,7 @@ AI_Engineer_Project/
 │   │       │   ├── entity_extractor.py    # spaCy + LLM entity extraction
 │   │       │   ├── doc_classifier.py      # LLM document categorization
 │   │       │   ├── relationship_mapper.py # Entity relationship extraction
-│   │       │   ├── component_classifier.py # GPT-4o vision component/material ID
+│   │       │   ├── component_classifier.py # Groq vision component/material ID
 │   │       │   ├── sustainability.py      # Carbon footprint estimation
 │   │       │   └── chunker.py             # Structure-aware document chunking
 │   │       ├── rag/                # Layer 3: RAG + Agentic Query
@@ -231,7 +232,7 @@ AI_Engineer_Project/
 
 ### Prerequisites
 
-- An **OpenAI API key** — Get one from [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+- A **Groq API key** (free) — Get one from [console.groq.com](https://console.groq.com)
 
 ---
 
@@ -252,11 +253,11 @@ cd AI_Engineer_Project
 cp .env.example .env
 ```
 
-**Step 3: Add your OpenAI API key**
+**Step 3: Add your Groq API key**
 
 Open `.env` in any text editor and replace the placeholder:
 ```
-OPENAI_API_KEY=sk-proj-your-actual-key-here
+GROQ_API_KEY=your-actual-groq-key-here
 ```
 Leave all other values as-is — the defaults are configured for Docker.
 
@@ -342,13 +343,14 @@ DATABASE_URL_SYNC=postgresql://docuser:docpass@localhost:5432/docintell
 CHROMA_HOST=local
 CHROMA_PORT=8000
 
-# OpenAI — REQUIRED
-OPENAI_API_KEY=sk-proj-your-actual-key-here
+# Groq — REQUIRED (free: https://console.groq.com)
+GROQ_API_KEY=your-actual-groq-key-here
 
-# LLM Models
-LLM_MODEL=gpt-4o
-LLM_MODEL_MINI=gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-3-small
+# LLM Models (Groq free tier)
+LLM_MODEL=llama-3.3-70b-versatile
+LLM_MODEL_MINI=llama-3.3-70b-versatile
+LLM_MODEL_VISION=llama-3.2-11b-vision-preview
+EMBEDDING_MODEL=all-MiniLM-L6-v2
 
 # File Storage — use a relative path for local development
 UPLOAD_DIR=./uploads
@@ -508,8 +510,8 @@ File received → Check MIME type + extension
 - Entity relationship mapping
 
 **Stream B (Tear-Down Photos):**
-- Component classification via GPT-4o vision
-- Material identification via GPT-4o vision
+- Component classification via Groq Llama 3.2 11B Vision
+- Material identification via Groq Llama 3.2 11B Vision
 - Cost + carbon footprint estimation from benchmark data
 - Confidence scoring with automatic flagging of low-confidence results
 
@@ -551,8 +553,8 @@ The full DDL is in `schema.sql`.
 | Decision | Rationale |
 |----------|-----------|
 | **FastAPI over Express** | Python ecosystem is superior for AI/ML tasks (spaCy, OpenCV, PyMuPDF). Async handles concurrent uploads well. |
-| **GPT-4o for vision** | Best available model for component/material classification from photos. Single provider simplifies API management. |
-| **GPT-4o-mini for text tasks** | Cost-efficient for NER refinement, classification, and SQL generation where full GPT-4o isn't needed. |
+| **Gemini 2.0 Flash for all LLM tasks** | Single model handles text + vision. Free tier (15 RPM, 1500 RPD) eliminates API cost concerns. |
+| **Gemini embeddings (text-embedding-004)** | Same free API for embeddings — no extra local dependencies, avoids numpy/scipy conflicts. |
 | **ChromaDB over Pinecone/Weaviate** | Lightweight, no external service needed, supports both Docker and local file-based mode. |
 | **Tesseract over cloud OCR** | Free, no extra API key needed, good enough with OpenCV preprocessing. |
 | **Two-agent RAG** | Separating retrieval from synthesis allows independent optimization and swapping of either component. |

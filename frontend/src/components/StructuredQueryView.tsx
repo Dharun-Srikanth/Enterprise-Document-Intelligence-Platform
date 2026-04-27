@@ -1,16 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Play,
+  Code2,
+  Table2,
+  Lightbulb,
+  AlertCircle,
+  Loader2,
+  Sparkles,
+} from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function StructuredQueryView() {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
-    sql: string | null;
-    results: any[] | null;
-    assumptions: string[] | null;
-    error: string | null;
+    sql: string | null; results: any[] | null;
+    assumptions: string[] | null; error: string | null;
   } | null>(null);
 
   const examples = [
@@ -25,163 +33,168 @@ export default function StructuredQueryView() {
     const query = q || question;
     if (!query.trim()) return;
     if (q) setQuestion(q);
-    setLoading(true);
-    setResult(null);
-    try {
-      const res = await api.structuredQuery(query);
-      setResult(res);
-    } catch (err: any) {
-      setResult({
-        sql: null,
-        results: null,
-        assumptions: null,
-        error: err.message,
-      });
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true); setResult(null);
+    try { setResult(await api.structuredQuery(query)); }
+    catch (err: any) { setResult({ sql: null, results: null, assumptions: null, error: err.message }); }
+    finally { setLoading(false); }
   };
 
   return (
-    <div>
-      {/* Example queries */}
-      <div style={{ marginBottom: 16 }}>
-        <span style={{ fontSize: 12, color: "var(--muted)" }}>Try: </span>
+    <div className="space-y-6">
+      {/* Example Chips */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex flex-wrap gap-2"
+      >
+        <span className="flex items-center gap-1.5 text-xs text-[#5c5f73]">
+          <Sparkles className="w-3 h-3 text-indigo-400" /> Try:
+        </span>
         {examples.map((ex, i) => (
           <button
             key={i}
-            className="example-chip"
+            className="chip"
             onClick={() => handleSubmit(ex)}
             disabled={loading}
           >
             {ex}
           </button>
         ))}
-      </div>
+      </motion.div>
 
       {/* Input */}
-      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-        <input
-          className="text-input"
-          placeholder="Ask a structured data question (generates SQL)..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-        />
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="flex gap-3"
+      >
+        <div className="relative flex-1">
+          <input
+            className="input-glow pr-4"
+            placeholder="Ask a data question — generates SQL automatically..."
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          />
+        </div>
         <button
-          className="btn btn-primary"
           onClick={() => handleSubmit()}
           disabled={loading || !question.trim()}
-          style={{ whiteSpace: "nowrap" }}
+          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-sm font-medium hover:from-indigo-500 hover:to-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all btn-glow flex-shrink-0"
         >
-          {loading ? <span className="spinner" /> : "Run Query"}
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+          Run Query
         </button>
-      </div>
+      </motion.div>
 
+      {/* Loading */}
       {loading && (
-        <div className="card" style={{ textAlign: "center", padding: 32 }}>
-          <span className="spinner" style={{ width: 24, height: 24 }} />
-          <p style={{ color: "var(--muted)", marginTop: 12, fontSize: 13 }}>
-            Generating SQL and executing query...
-          </p>
+        <div className="gradient-card p-10 text-center">
+          <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-400 rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-[#5c5f73] mt-4">Generating SQL and executing query...</p>
         </div>
       )}
 
-      {result && !loading && (
-        <div>
-          {result.error && (
-            <div className="card" style={{ borderColor: "var(--error)" }}>
-              <p style={{ color: "var(--error)", fontSize: 13 }}>
-                ⚠ {result.error}
-              </p>
-            </div>
-          )}
+      {/* Results */}
+      <AnimatePresence>
+        {result && !loading && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="space-y-4"
+          >
+            {/* Error */}
+            {result.error && (
+              <div className="gradient-card p-4 border-l-2 border-red-500">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-red-400">{result.error}</p>
+                </div>
+              </div>
+            )}
 
-          {result.sql && (
-            <div style={{ marginBottom: 16 }}>
-              <h4
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  marginBottom: 8,
-                }}
-              >
-                GENERATED SQL
-              </h4>
-              <div className="sql-display">{result.sql}</div>
-            </div>
-          )}
+            {/* Generated SQL */}
+            {result.sql && (
+              <div className="gradient-card p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Code2 className="w-3.5 h-3.5 text-indigo-400" />
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">Generated SQL</h4>
+                </div>
+                <div className="bg-[#0d0e1a] rounded-lg p-4 border border-white/[0.04] overflow-x-auto">
+                  <pre className="text-sm font-mono leading-relaxed text-indigo-300 whitespace-pre-wrap">
+                    {result.sql}
+                  </pre>
+                </div>
+              </div>
+            )}
 
-          {result.assumptions && result.assumptions.length > 0 && (
-            <div style={{ marginBottom: 16 }}>
-              <h4
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  marginBottom: 8,
-                }}
-              >
-                ASSUMPTIONS
-              </h4>
-              <ul
-                style={{
-                  paddingLeft: 20,
-                  fontSize: 13,
-                  color: "var(--muted)",
-                }}
-              >
-                {result.assumptions.map((a, i) => (
-                  <li key={i} style={{ marginBottom: 4 }}>
-                    {a}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {/* Assumptions */}
+            {result.assumptions && result.assumptions.length > 0 && (
+              <div className="gradient-card p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">Assumptions</h4>
+                </div>
+                <ul className="space-y-1.5">
+                  {result.assumptions.map((a, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-[#9396a5]">
+                      <span className="text-amber-400/60 mt-1">•</span>
+                      {a}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {result.results && result.results.length > 0 && (
-            <div>
-              <h4
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  marginBottom: 8,
-                }}
-              >
-                RESULTS ({result.results.length} rows)
-              </h4>
-              <div style={{ overflowX: "auto" }}>
-                <table className="results-table">
-                  <thead>
-                    <tr>
-                      {Object.keys(result.results[0]).map((key) => (
-                        <th key={key}>{key}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.results.map((row, i) => (
-                      <tr key={i}>
-                        {Object.values(row).map((val: any, j) => (
-                          <td key={j}>{val?.toString() ?? "—"}</td>
+            {/* Results Table */}
+            {result.results && result.results.length > 0 && (
+              <div className="gradient-card p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Table2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">
+                    Results ({result.results.length} rows)
+                  </h4>
+                </div>
+                <div className="overflow-x-auto rounded-lg border border-white/[0.04]">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-white/[0.02]">
+                        {Object.keys(result.results[0]).map((key) => (
+                          <th key={key} className="text-left py-2.5 px-4 text-[11px] font-semibold uppercase tracking-wider text-[#5c5f73] border-b border-white/[0.04]">
+                            {key}
+                          </th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {result.results.map((row, i) => (
+                        <tr key={i} className="border-b border-white/[0.03] table-row-hover">
+                          {Object.values(row).map((val: any, j) => (
+                            <td key={j} className="py-2.5 px-4 text-[#9396a5]">
+                              {val?.toString() ?? "—"}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {result.results && result.results.length === 0 && !result.error && (
-            <div className="card" style={{ textAlign: "center", padding: 24 }}>
-              <p style={{ color: "var(--muted)" }}>
-                Query executed successfully but returned no results.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
+            {result.results && result.results.length === 0 && !result.error && (
+              <div className="gradient-card p-10 text-center">
+                <Table2 className="w-8 h-8 text-[#5c5f73] mx-auto mb-3" />
+                <p className="text-sm text-[#5c5f73]">Query executed successfully but returned no results.</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,16 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Send,
+  BrainCircuit,
+  Sparkles,
+  FileText,
+  AlertCircle,
+  Loader2,
+  BookOpen,
+  Gauge,
+} from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function AnalyticalQueryView() {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
-    answer: string | null;
-    sources: any[] | null;
-    confidence: number | null;
-    error: string | null;
+    answer: string | null; sources: any[] | null;
+    confidence: number | null; error: string | null;
   } | null>(null);
 
   const examples = [
@@ -24,207 +33,208 @@ export default function AnalyticalQueryView() {
     const query = q || question;
     if (!query.trim()) return;
     if (q) setQuestion(q);
-    setLoading(true);
-    setResult(null);
-    try {
-      const res = await api.analyticalQuery(query);
-      setResult(res);
-    } catch (err: any) {
-      setResult({
-        answer: null,
-        sources: null,
-        confidence: null,
-        error: err.message,
-      });
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true); setResult(null);
+    try { setResult(await api.analyticalQuery(query)); }
+    catch (err: any) { setResult({ answer: null, sources: null, confidence: null, error: err.message }); }
+    finally { setLoading(false); }
   };
 
   const confidenceColor = (c: number) =>
-    c >= 0.7
-      ? "confidence-high"
-      : c >= 0.4
-      ? "confidence-mid"
-      : "confidence-low";
-
+    c >= 0.7 ? "text-emerald-400" : c >= 0.4 ? "text-amber-400" : "text-red-400";
+  const confidenceBarColor = (c: number) =>
+    c >= 0.7 ? "from-emerald-500 to-emerald-400" : c >= 0.4 ? "from-amber-500 to-amber-400" : "from-red-500 to-red-400";
   const confidenceLabel = (c: number) =>
-    c >= 0.8
-      ? "High confidence"
-      : c >= 0.5
-      ? "Moderate confidence"
-      : "Low confidence";
+    c >= 0.8 ? "High confidence" : c >= 0.5 ? "Moderate confidence" : "Low confidence";
 
   return (
-    <div>
-      {/* Example queries */}
-      <div style={{ marginBottom: 16 }}>
-        <span style={{ fontSize: 12, color: "var(--muted)" }}>Try: </span>
+    <div className="space-y-6">
+      {/* Example Chips */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex flex-wrap gap-2"
+      >
+        <span className="flex items-center gap-1.5 text-xs text-[#5c5f73]">
+          <Sparkles className="w-3 h-3 text-purple-400" /> Try:
+        </span>
         {examples.map((ex, i) => (
-          <button
-            key={i}
-            className="example-chip"
-            onClick={() => handleSubmit(ex)}
-            disabled={loading}
-          >
+          <button key={i} className="chip" onClick={() => handleSubmit(ex)} disabled={loading}>
             {ex}
           </button>
         ))}
-      </div>
+      </motion.div>
 
       {/* Input */}
-      <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-        <input
-          className="text-input"
-          placeholder="Ask an analytical question about your documents..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-        />
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="flex gap-3"
+      >
+        <div className="relative flex-1">
+          <BrainCircuit className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#5c5f73]" />
+          <input
+            className="input-glow pl-11"
+            placeholder="Ask an analytical question about your documents..."
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          />
+        </div>
         <button
-          className="btn btn-primary"
           onClick={() => handleSubmit()}
           disabled={loading || !question.trim()}
-          style={{ whiteSpace: "nowrap" }}
+          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-500 text-white text-sm font-medium hover:from-purple-500 hover:to-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all btn-glow flex-shrink-0"
         >
-          {loading ? <span className="spinner" /> : "Analyze"}
+          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+          Analyze
         </button>
-      </div>
+      </motion.div>
 
+      {/* Loading */}
       {loading && (
-        <div className="card" style={{ textAlign: "center", padding: 32 }}>
-          <span className="spinner" style={{ width: 24, height: 24 }} />
-          <p style={{ color: "var(--muted)", marginTop: 12, fontSize: 13 }}>
-            Searching documents and synthesizing answer...
-          </p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="gradient-card p-12 text-center"
+        >
+          <div className="relative w-16 h-16 mx-auto mb-4">
+            <div className="absolute inset-0 rounded-full border-2 border-purple-500/20 border-t-purple-400 animate-spin" />
+            <div className="absolute inset-2 rounded-full border-2 border-indigo-500/20 border-b-indigo-400 animate-spin" style={{ animationDirection: "reverse", animationDuration: "1.5s" }} />
+            <BrainCircuit className="absolute inset-0 m-auto w-6 h-6 text-purple-400" />
+          </div>
+          <p className="text-sm text-[#9396a5]">Searching documents and synthesizing answer...</p>
+          <p className="text-xs text-[#5c5f73] mt-1">Multi-hop retrieval across your corpus</p>
+        </motion.div>
       )}
 
-      {result && !loading && (
-        <div>
-          {result.error && (
-            <div className="card" style={{ borderColor: "var(--error)" }}>
-              <p style={{ color: "var(--error)", fontSize: 13 }}>
-                ⚠ {result.error}
-              </p>
-            </div>
-          )}
-
-          {/* Confidence bar */}
-          {result.confidence != null && (
-            <div style={{ marginBottom: 16 }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: 12,
-                  marginBottom: 4,
-                }}
-              >
-                <span style={{ color: "var(--muted)" }}>
-                  {confidenceLabel(result.confidence)}
-                </span>
-                <span>{Math.round(result.confidence * 100)}%</span>
-              </div>
-              <div className="confidence-bar">
-                <div
-                  className={`confidence-fill ${confidenceColor(result.confidence)}`}
-                  style={{ width: `${result.confidence * 100}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Answer */}
-          {result.answer && (
-            <div className="card">
-              <h4
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  marginBottom: 12,
-                }}
-              >
-                ANSWER
-              </h4>
-              <div
-                style={{ fontSize: 14, lineHeight: 1.7, whiteSpace: "pre-wrap" }}
-              >
-                {result.answer}
-              </div>
-            </div>
-          )}
-
-          {/* Sources — using backend fields: filename, section, preview, relevance_score */}
-          {result.sources && result.sources.length > 0 && (
-            <div style={{ marginTop: 16 }}>
-              <h4
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  marginBottom: 8,
-                }}
-              >
-                SOURCES ({result.sources.length})
-              </h4>
-              {result.sources.map((src: any, i: number) => (
-                <div className="source-ref" key={i}>
-                  <span
-                    style={{ color: "var(--accent)", fontWeight: 600, flexShrink: 0 }}
-                  >
-                    [{i + 1}]
-                  </span>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontWeight: 500, fontSize: 13 }}>
-                      {src.filename || "Unknown source"}
-                      {src.section && (
-                        <span style={{ color: "var(--muted)", fontWeight: 400 }}>
-                          {" "}
-                          — {src.section}
-                        </span>
-                      )}
-                    </div>
-                    {src.preview && (
-                      <div
-                        style={{
-                          fontSize: 12,
-                          color: "var(--muted)",
-                          marginTop: 4,
-                          lineHeight: 1.5,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        &ldquo;{src.preview}&rdquo;
-                      </div>
-                    )}
-                    {src.relevance_score != null && (
-                      <div style={{ marginTop: 4, maxWidth: 120 }}>
-                        <div className="confidence-bar" style={{ height: 3 }}>
-                          <div
-                            className={`confidence-fill ${confidenceColor(src.relevance_score)}`}
-                            style={{
-                              width: `${src.relevance_score * 100}%`,
-                            }}
-                          />
-                        </div>
-                        <span
-                          style={{ fontSize: 10, color: "var(--muted)" }}
-                        >
-                          {Math.round(src.relevance_score * 100)}% relevance
-                        </span>
-                      </div>
-                    )}
-                  </div>
+      {/* Results */}
+      <AnimatePresence>
+        {result && !loading && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="space-y-4"
+          >
+            {/* Error */}
+            {result.error && (
+              <div className="gradient-card p-4 border-l-2 border-red-500">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-red-400">{result.error}</p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+              </div>
+            )}
+
+            {/* Confidence */}
+            {result.confidence != null && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.1 }}
+                className="gradient-card p-5"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Gauge className="w-3.5 h-3.5 text-indigo-400" />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">
+                      {confidenceLabel(result.confidence)}
+                    </span>
+                  </div>
+                  <span className={`text-lg font-bold ${confidenceColor(result.confidence)}`}>
+                    {Math.round(result.confidence * 100)}%
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${result.confidence * 100}%` }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className={`h-full rounded-full bg-gradient-to-r ${confidenceBarColor(result.confidence)}`}
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {/* Answer */}
+            {result.answer && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="gradient-card p-6"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">Answer</h4>
+                </div>
+                <div className="text-sm leading-7 text-[#c8cad5] whitespace-pre-wrap">
+                  {result.answer}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Sources */}
+            {result.sources && result.sources.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="gradient-card p-6"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <FileText className="w-3.5 h-3.5 text-indigo-400" />
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#5c5f73]">
+                    Sources ({result.sources.length})
+                  </h4>
+                </div>
+                <div className="space-y-3">
+                  {result.sources.map((src: any, i: number) => (
+                    <div key={i} className="source-item py-3 px-4 rounded-r-lg">
+                      <div className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-md bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-xs font-bold text-indigo-400">
+                          {i + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-sm font-medium text-white">
+                              {src.filename || "Unknown source"}
+                            </span>
+                            {src.section && (
+                              <span className="text-xs text-[#5c5f73]">— {src.section}</span>
+                            )}
+                          </div>
+                          {src.preview && (
+                            <p className="text-xs text-[#5c5f73] mt-1.5 leading-relaxed line-clamp-2">
+                              &ldquo;{src.preview}&rdquo;
+                            </p>
+                          )}
+                          {src.relevance_score != null && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <div className="w-16 h-1 rounded-full bg-white/[0.06] overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full bg-gradient-to-r ${confidenceBarColor(src.relevance_score)}`}
+                                  style={{ width: `${src.relevance_score * 100}%` }}
+                                />
+                              </div>
+                              <span className="text-[10px] text-[#5c5f73]">
+                                {Math.round(src.relevance_score * 100)}% relevance
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

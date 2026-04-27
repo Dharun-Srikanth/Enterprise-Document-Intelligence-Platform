@@ -58,7 +58,7 @@ def decompose_query(question: str) -> list[str]:
             {"role": "user", "content": f"Decompose this question:\n\n{question}"},
         ]
 
-        result = chat_completion_json(messages, model="gpt-4o-mini", temperature=0.0, max_tokens=500)
+        result = chat_completion_json(messages, temperature=0.0, max_tokens=500)
         sub_queries = result.get("sub_queries", [question])
 
         if not sub_queries:

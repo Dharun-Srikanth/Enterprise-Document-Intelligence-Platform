@@ -68,7 +68,6 @@ Document text:
 
     result = chat_completion_json(
         messages=[{"role": "user", "content": prompt}],
-        model="gpt-4o-mini",
         temperature=0.0,
         max_tokens=500,
     )

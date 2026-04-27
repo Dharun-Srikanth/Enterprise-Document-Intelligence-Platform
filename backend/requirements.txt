@@ -14,7 +14,7 @@ psycopg2-binary==2.9.9
 # Vector Store
 chromadb==0.5.5
 
-# OpenAI
+# LLM — Groq (free tier, OpenAI-compatible API)
 openai==1.51.0
 
 # OCR + Image Processing
